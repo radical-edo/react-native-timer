@@ -43,7 +43,8 @@ class Timer extends React.Component {
   }
 
   _onActionStop(ev) {
-    clearInterval(this.timer);
+    clearInterval(this._timer);
+    this._timer = null;
   }
 
   componentDidMount() {
@@ -51,7 +52,7 @@ class Timer extends React.Component {
   }
 
   _startCountingSeconds() {
-    this.timer = setInterval(() => {
+    this._timer = this._timer || setInterval(() => {
       this._secondHasPassed();
     }, 1000);
   }
@@ -70,6 +71,7 @@ class Timer extends React.Component {
   constructor(props) {
     super(props);
     this.duration = moment.duration();
+    this._timer = null;
     this.state = {
       timeElpased: this._formatTime()
     };

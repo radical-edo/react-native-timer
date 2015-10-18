@@ -47,10 +47,6 @@ class Timer extends React.Component {
     this._timer = null;
   }
 
-  componentDidMount() {
-    this._startCountingSeconds();
-  }
-
   _startCountingSeconds() {
     this._timer = this._timer || setInterval(() => {
       this._secondHasPassed();

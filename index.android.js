@@ -3,16 +3,41 @@
 var React = require('react-native');
 var { AppRegistry, StyleSheet, TouchableOpacity, Text, View } = React;
 var moment = require('moment');
+var _ = require('lodash');
 
 class Timer extends React.Component {
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <Text>
           {this.state.timeElpased}
         </Text>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={this._onAction('stop')} style={styles.button}>
+            <Text style={{ textAlign: 'center' }}>
+              Stop
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={[styles.button, { backgroundColor: '#9ED795' }]}>
+            <Text style={{ textAlign: 'center' }}>
+              Start
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
+  }
+
+  _onAction(type) {
+    return (ev) => {
+      this['_onAction' + _.capitalize(type)](ev);
+    };
+  }
+
+  _onActionStop(ev) {
+    clearInterval(this.timer);
   }
 
   componentDidMount() {
@@ -20,7 +45,7 @@ class Timer extends React.Component {
   }
 
   _startCountingSeconds() {
-    setInterval(() => {
+    this.timer = setInterval(() => {
       this._secondHasPassed();
     }, 1000);
   }
@@ -49,10 +74,13 @@ var styles = StyleSheet.create({
   button: {
     padding: 10,
     fontSize: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#E4555F',
+  },
+  buttonContainer: {
+    width: 100,
+    margin: 5
   },
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',

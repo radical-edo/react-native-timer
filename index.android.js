@@ -20,7 +20,9 @@ class Timer extends React.Component {
           </TouchableOpacity>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={[styles.button, { backgroundColor: '#9ED795' }]}>
+          <TouchableOpacity
+            onPress={this._onAction('start')}
+            style={[styles.button, { backgroundColor: '#9ED795' }]}>
             <Text style={{ textAlign: 'center' }}>
               Start
             </Text>
@@ -34,6 +36,10 @@ class Timer extends React.Component {
     return (ev) => {
       this['_onAction' + _.capitalize(type)](ev);
     };
+  }
+
+  _onActionStart(ev) {
+    this._startCountingSeconds();
   }
 
   _onActionStop(ev) {

@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react-native');
-var { AppRegistry, StyleSheet, TouchableOpacity, Text, View } = React;
+var { AppRegistry, StyleSheet, TouchableOpacity, Text, TextInput, View } = React;
 var moment = require('moment');
 var _ = require('lodash');
 
@@ -28,23 +28,36 @@ class Timer extends React.Component {
             </Text>
           </TouchableOpacity>
         </View>
+        <View>
+          <TextInput
+            keyboardType="numeric"
+            placeholder="Training period"
+            value={this.state.periods.training}
+            onChangeText={this._onAction('changePeriod', 'training')}>
+          </TextInput>
+          <TextInput
+            keyboardType="numeric"
+            placeholder="Rest period"
+            value={this.state.periods.rest}
+            onChangeText={this._onAction('changePeriod', 'rest')}>
+          </TextInput>
+        </View>
+        <View>
+          <Text>{this.state.notification}</Text>
+        </View>
       </View>
     );
   }
 
-  _onAction(type) {
-    return (ev) => {
-      this['_onAction' + _.capitalize(type)](ev);
-    };
+  _onActionChangePeriod(input, name) {
+    this.state.periods[name] = input;
+    this.setState(this.state);
   }
 
   _onActionStart(ev) {
     this._startCountingSeconds();
-  }
-
-  _onActionStop(ev) {
-    clearInterval(this._timer);
-    this._timer = null;
+    console.log(this.state);
+    this._initNotifications();
   }
 
   _startCountingSeconds() {
@@ -58,6 +71,26 @@ class Timer extends React.Component {
     this.setState({
       timeElpased: this._formatTime()
     });
+  }
+
+  _initNotifications() {
+    var { training } = this.state.periods;
+    setTimeout(() => {
+      this.setState({ notification: 'Rest' });
+      this._trainingPeriodPassed();
+    }, training * 1e3);
+  }
+
+  _trainingPeriodPassed() {
+    setTimeout(() => {
+      this.setState({ notification: 'Train' });
+      this._initNotifications();
+    }, this.state.periods.rest * 1e3);
+  }
+
+  _onActionStop(ev) {
+    clearInterval(this._timer);
+    this._timer = null;
   }
 
   _formatTime() {
@@ -75,7 +108,12 @@ class Timer extends React.Component {
     this.duration = moment.duration();
     this._timer = null;
     this.state = {
-      timeElpased: this._formatTime()
+      timeElpased: this._formatTime(),
+      notification: '',
+      periods: {
+        training: 0,
+        rest: 0
+      }
     };
   }
 };

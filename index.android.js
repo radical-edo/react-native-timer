@@ -64,6 +64,12 @@ class Timer extends React.Component {
     return `${this.duration.minutes()} : ${this.duration.seconds()}`;
   }
 
+  _onAction(type, ...rest) {
+    return (ev) => {
+      this['_onAction' + _.capitalize(type)].apply(this, [ev].concat(rest));
+    };
+  }
+
   constructor(props) {
     super(props);
     this.duration = moment.duration();

@@ -4,6 +4,7 @@ var React = require('react-native');
 var { AppRegistry, StyleSheet, TouchableOpacity, Text, TextInput, View } = React;
 var moment = require('moment');
 var _ = require('lodash');
+var AudioPlayer = require('react-native-audioplayer');
 
 class Timer extends React.Component {
   render() {
@@ -56,7 +57,6 @@ class Timer extends React.Component {
 
   _onActionStart(ev) {
     this._startCountingSeconds();
-    console.log(this.state);
     this._initNotifications();
   }
 
@@ -77,6 +77,7 @@ class Timer extends React.Component {
     var { training } = this.state.periods;
     setTimeout(() => {
       this.setState({ notification: 'Rest' });
+      AudioPlayer.play('ding');
       this._trainingPeriodPassed();
     }, training * 1e3);
   }
@@ -84,6 +85,7 @@ class Timer extends React.Component {
   _trainingPeriodPassed() {
     setTimeout(() => {
       this.setState({ notification: 'Train' });
+      AudioPlayer.play('ding');
       this._initNotifications();
     }, this.state.periods.rest * 1e3);
   }

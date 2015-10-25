@@ -7,6 +7,11 @@ import AudioPlayer from 'react-native-audioplayer';
 
 const { AppRegistry, StyleSheet, TouchableOpacity, Text, TextInput, View } = React;
 
+const PERIODS_MAP = {
+  training: 'rest',
+  rest: 'training'
+};
+
 class Timer extends React.Component {
   render() {
     return (
@@ -52,7 +57,7 @@ class Timer extends React.Component {
   }
 
   _onActionChangePeriod(input, name) {
-    this.state.periods[name] = input;
+    this.state.periods[name] = Number(input);
     this.setState(this.state);
   }
 
@@ -69,26 +74,23 @@ class Timer extends React.Component {
 
   _secondHasPassed() {
     this.duration.add(1, 'second');
+    if (0 == this.duration.seconds() % this._periodEnd) {
+      AudioPlayer.play('ding');
+      this._currentPeriod = this._getNextPeriod();
+      this._periodEnd += this.state.periods[this._currentPeriod];
+    }
     this.setState({
       timeElpased: this._formatTime()
     });
   }
 
-  _initNotifications() {
-    var { training } = this.state.periods;
-    setTimeout(() => {
-      this.setState({ notification: 'Rest' });
-      AudioPlayer.play('ding');
-      this._trainingPeriodPassed();
-    }, training * 1e3);
+  _getNextPeriod() {
+    return PERIODS_MAP[this._currentPeriod];
   }
 
-  _trainingPeriodPassed() {
-    setTimeout(() => {
-      this.setState({ notification: 'Train' });
-      AudioPlayer.play('ding');
-      this._initNotifications();
-    }, this.state.periods.rest * 1e3);
+  _initNotifications() {
+    this._periodEnd = this.state.periods.training;
+    this._currentPeriod = 'training';
   }
 
   _onActionStop(ev) {

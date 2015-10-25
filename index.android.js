@@ -1,10 +1,11 @@
 'use strict';
 
-var React = require('react-native');
-var { AppRegistry, StyleSheet, TouchableOpacity, Text, TextInput, View } = React;
-var moment = require('moment');
-var _ = require('lodash');
-var AudioPlayer = require('react-native-audioplayer');
+import React from 'react-native';
+import moment from 'moment';
+import _ from 'lodash';
+import AudioPlayer from 'react-native-audioplayer';
+
+const { AppRegistry, StyleSheet, TouchableOpacity, Text, TextInput, View } = React;
 
 class Timer extends React.Component {
   render() {

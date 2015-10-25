@@ -22,7 +22,7 @@ class Timer extends React.Component {
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={this._onAction('stop')} style={styles.button}>
             <Text style={{ textAlign: 'center' }}>
-              Stop
+              Pause
             </Text>
           </TouchableOpacity>
         </View>
@@ -31,7 +31,7 @@ class Timer extends React.Component {
             onPress={this._onAction('start')}
             style={[styles.button, { backgroundColor: '#9ED795' }]}>
             <Text style={{ textAlign: 'center' }}>
-              Start
+              {this.state.startText}
             </Text>
           </TouchableOpacity>
         </View>
@@ -62,6 +62,9 @@ class Timer extends React.Component {
   }
 
   _onActionStart(ev) {
+    this.setState({
+      startText: 'Resume'
+    });
     this._startCountingSeconds();
     this._initNotifications();
   }
@@ -89,8 +92,8 @@ class Timer extends React.Component {
   }
 
   _initNotifications() {
-    this._periodEnd = this.state.periods.training;
-    this._currentPeriod = 'training';
+    this._periodEnd = this._periodEnd || this.state.periods.training;
+    this._currentPeriod = this._currentPeriod || 'training';
   }
 
   _onActionStop(ev) {
@@ -112,7 +115,12 @@ class Timer extends React.Component {
     super(props);
     this.duration = moment.duration();
     this._timer = null;
-    this.state = {
+    this.state = this._getInitialState();
+  }
+
+  _getInitialState() {
+    return {
+      startText: 'Start',
       timeElpased: this._formatTime(),
       notification: '',
       periods: {

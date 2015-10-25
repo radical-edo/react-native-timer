@@ -74,7 +74,7 @@ class Timer extends React.Component {
 
   _secondHasPassed() {
     this.duration.add(1, 'second');
-    if (0 == this.duration.seconds() % this._periodEnd) {
+    if (0 == this.duration.as('seconds') % this._periodEnd) {
       AudioPlayer.play('ding');
       this._currentPeriod = this._getNextPeriod();
       this._periodEnd += this.state.periods[this._currentPeriod];

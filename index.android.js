@@ -20,7 +20,7 @@ class Timer extends React.Component {
           {this.state.timeElpased}
         </Text>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={this._onAction('stop')} style={styles.button}>
+          <TouchableOpacity onPress={this._onAction('pause')} style={[styles.button, { backgroundColor: '#FFFF8F' }]}>
             <Text style={{ textAlign: 'center' }}>
               Pause
             </Text>
@@ -32,6 +32,13 @@ class Timer extends React.Component {
             style={[styles.button, { backgroundColor: '#9ED795' }]}>
             <Text style={{ textAlign: 'center' }}>
               {this.state.startText}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={this._onAction('reset')} style={styles.button}>
+            <Text style={{ textAlign: 'center' }}>
+              Reset
             </Text>
           </TouchableOpacity>
         </View>
@@ -54,6 +61,13 @@ class Timer extends React.Component {
         </View>
       </View>
     );
+  }
+
+  _onActionReset() {
+    this._onActionPause();
+    this.duration = moment.duration();
+    this._periodEnd = null;
+    this.setState(_.omit(this._getInitialState(), 'periods'));
   }
 
   _onActionChangePeriod(input, name) {
@@ -96,7 +110,7 @@ class Timer extends React.Component {
     this._currentPeriod = this._currentPeriod || 'training';
   }
 
-  _onActionStop(ev) {
+  _onActionPause(ev) {
     clearInterval(this._timer);
     this._timer = null;
   }

@@ -16,33 +16,37 @@ class Timer extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>
-          {this.state.timeElpased}
-        </Text>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={this._onAction('pause')} style={[styles.button, { backgroundColor: '#FFFF8F' }]}>
-            <Text style={{ textAlign: 'center' }}>
-              Pause
-            </Text>
-          </TouchableOpacity>
+        <View style={styles.row}>
+          <Text style={styles.time}>
+            {this.state.timeElpased}
+          </Text>
+          <View style={styles.container}>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity onPress={this._onAction('pause')} style={[styles.button, { backgroundColor: '#FFFF8F' }]}>
+                <Text style={{ textAlign: 'center' }}>
+                  Pause
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                onPress={this._onAction('start')}
+                style={[styles.button, { backgroundColor: '#9ED795' }]}>
+                <Text style={{ textAlign: 'center' }}>
+                  {this.state.startText}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={this._onAction('reset')} style={styles.button}>
+              <Text style={{ textAlign: 'center' }}>
+                Reset
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={this._onAction('start')}
-            style={[styles.button, { backgroundColor: '#9ED795' }]}>
-            <Text style={{ textAlign: 'center' }}>
-              {this.state.startText}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={this._onAction('reset')} style={styles.button}>
-            <Text style={{ textAlign: 'center' }}>
-              Reset
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View>
+        <View style={[styles.row, styles.inputs]}>
           <TextInput
             keyboardType="numeric"
             placeholder="Training period"
@@ -56,7 +60,7 @@ class Timer extends React.Component {
             onChangeText={this._onAction('changePeriod', 'rest')}>
           </TextInput>
         </View>
-        <View>
+        <View style={styles.row}>
           <Text>{this.state.notification}</Text>
         </View>
       </View>
@@ -146,6 +150,9 @@ class Timer extends React.Component {
 };
 
 var styles = StyleSheet.create({
+  time: {
+    fontSize: 50
+  },
   button: {
     padding: 10,
     fontSize: 20,
@@ -155,20 +162,13 @@ var styles = StyleSheet.create({
     width: 100,
     margin: 5
   },
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  inputs: {
+    flexDirection: 'column',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
   },
 });
 
